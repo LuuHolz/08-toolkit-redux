@@ -1,24 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export const pokeomnSlice = createSlice({
-    name: 'pokemon',
-    initialState: {
-            page: 0,
-            pokemons: [],
-            isLoading: false,
-        },
-    reducers: {
-        startLoadingPokemons: (state, /* action */ ) => {
+interface PokemonState {
+  page: number;
+  pokemons: Array<{ name: string; url: string }>;
+  isLoading: boolean;
+}
 
-            state.isLoading = true;
-        },
-        setPokemons: ( state, action ) => {
-            state.isLoading = false;
-            state.page = action.payload.page;
-            state.pokemons = action.payload.pokemos;
-        }
-    }
+const initialState: PokemonState = {
+  page: 0,
+  pokemons: [],
+  isLoading: false,
+};
+
+export const pokemonSlice = createSlice({
+  name: 'pokemon',
+  initialState,
+  reducers: {
+    startLoadingPokemons: (state) => {
+      state.isLoading = true;
+    },
+    setPokemons: (state, action: PayloadAction<{ pokemons: Array<{ name: string; url: string }>, page: number }>) => {
+      state.isLoading = false;
+      state.page = action.payload.page;
+      state.pokemons = action.payload.pokemons;
+    },
+  },
 });
 
-
-export const { startLoadingPokemons, setPokemons } = pokeomnSlice.actions;
+export const { startLoadingPokemons, setPokemons } = pokemonSlice.actions;
